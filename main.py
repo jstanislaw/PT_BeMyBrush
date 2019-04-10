@@ -6,7 +6,7 @@ import time
 if __name__ == "__main__":
 
     orangeLower = (8, 150, 115)
-    orangeUpper = (60, 255, 255)
+    orangeUpper = (20, 255, 241)
 
     videoInput = cv2.VideoCapture(0)
     time.sleep(1.0)
@@ -34,6 +34,7 @@ if __name__ == "__main__":
 
             if radius > 10:
                 cv2.circle(frame, (int(x), int(y)), int(radius), (0, 255, 255), 2)
+                cv2.circle(frame, center, 5, (0, 0, 255), -1)
 
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
