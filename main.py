@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
         output = cv2.addWeighted(frame, alpha, canvas, beta, 0.0)
         merged1 = np.hstack((output, canvas))
-        merged2 = np.vstack((merged1, CreateBlankCanvas(1200, 20, brush_color[0], brush_color[1], brush_color[2])))
+        merged2 = np.vstack((CreateBlankCanvas(1200, 20, brush_color[0], brush_color[1], brush_color[2]), merged1 ))
 
         cv2.imshow("Frame", merged2)
 
