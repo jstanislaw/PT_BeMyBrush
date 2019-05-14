@@ -57,7 +57,7 @@ if __name__ == "__main__":
         rubber = cv2.getTrackbarPos('Rubber', 'Frame')
         brush_size = cv2.getTrackbarPos('Brush Size', 'Frame')
 
-        if(tn):
+        if( tn ):
             canvas = CreateBlankCanvas(frame.shape[1], frame.shape[0], canvas_color[0], canvas_color[1], canvas_color[2])
             tn = False
 
