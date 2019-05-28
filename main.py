@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import imutils
 import time
+import os
 
 
 def DrawPoint(x, y, radius, blue, green, red, output):
@@ -48,9 +49,17 @@ def ReadFromFile(nr):
         i += 1
 
 
-if __name__ == "__main__":
+#zapis obrazu do pliku
+def SaveFile(cs, image):
 
-#--------------Kalibracja-----------------
+    if cs == 1:
+        timestr = time.strftime("%Y%m%d_%H%M%S")
+        if not os.path.exists("SavedImages"):
+            os.mkdir("SavedImages")
+        cv2.imwrite("SavedImages/Picture%s.jpg" % timestr, image)
+
+
+def calibration():
 
     nr = [0, 0, 0, 179, 255, 255]
     ReadFromFile(nr)
@@ -108,8 +117,11 @@ if __name__ == "__main__":
     print(orangeLower)
     print(orangeUpper)
 
-#---------- Rysowanie ----------------
+    return orangeLower, orangeUpper
 
+
+def drawing():
+    cansave = 1
 
     ox = int(0)
     oy = int(0)
@@ -124,6 +136,7 @@ if __name__ == "__main__":
     videoInput = cv2.VideoCapture(0)
     time.sleep(1.0)
 
+    # tn = True
 
     cv2.namedWindow('Frame', cv2.WINDOW_AUTOSIZE)
 
@@ -137,11 +150,11 @@ if __name__ == "__main__":
         frame = np.fliplr(frame)
         frame = imutils.resize(frame, width=600)
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        mask = cv2.inRange(hsv, orangeLower, orangeUpper)
+        mask = cv2.inRange(hsv, orangeLowerdrawing, orangeUpperdrawing)
 
-        #if tn :
-        #   canvas = CreateBlankCanvas(frame.shape[1], frame.shape[0], canvas_color[0], canvas_color[1], canvas_color[2])
-        #   tn = False
+        #        if tn :
+        #            canvas = CreateBlankCanvas(frame.shape[1], frame.shape[0], canvas_color[0], canvas_color[1], canvas_color[2])
+        #            tn = False
 
         mask = cv2.erode(mask, None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=2)
@@ -178,6 +191,7 @@ if __name__ == "__main__":
                            (brush_color[0], brush_color[1], brush_color[2]), -1)
 
                 if y > 40 and 40 < x < 560:
+                    cansave = 1
                     if ox == 0 and oy == 0:
                         if rubber:
                             DrawPoint(x, y, brush_size, canvas_color[0], canvas_color[1], canvas_color[2], canvas)
@@ -203,9 +217,10 @@ if __name__ == "__main__":
                             canvas = CreateBlankCanvas(frame.shape[1], frame.shape[0], canvas_color[0], canvas_color[1],
                                                        canvas_color[2])
                         if 250 < x < 350:
-                            nothing(1) # zapis pliku
+                            SaveFile(cansave, crap_canvas)
                             cv2.rectangle(frame, (int(255), int(2)), (int(345), int(37)), (0, 0, 255), thickness=2,
                                           lineType=8)
+                            cansave = 0
 
                     if x < 35:
                         if 0 < y < 70:
@@ -266,3 +281,13 @@ if __name__ == "__main__":
 
     videoInput.release()
     cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+
+#--------------Kalibracja-----------------
+
+    orangeLowerdrawing, orangeUpperdrawing = calibration()
+
+#---------- Rysowanie ----------------
+
+    drawing()
