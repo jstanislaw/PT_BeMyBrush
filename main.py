@@ -266,7 +266,7 @@ def drawing():
             oy = y
 
         crap_canvas = canvas[40:450, 40:560]
-        crap_canvas = cv2.resize(crap_canvas, (int(600), int(450)))
+        crap_canvas = imutils.resize(crap_canvas, height=450)
         output = cv2.addWeighted(frame, alpha, canvas, beta, 0.0)
         GUI = cv2.addWeighted(output, 0.5, interface, 0.5, 0.0)
         merged1 = np.hstack((GUI, crap_canvas))
