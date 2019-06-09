@@ -67,6 +67,8 @@ def calibration():
     orangeLower = (nr[0], nr[1], nr[2])
     orangeUpper = (nr[3], nr[4], nr[5])
 
+    label  = cv2.imread('Resources/Label.png', cv2.IMREAD_GRAYSCALE)
+
     videoInput2 = cv2.VideoCapture(0)
     time.sleep(1.0)
 
@@ -102,11 +104,21 @@ def calibration():
         # cv2.moveWindow("Trackbars", 250, 150)
         # cv2.moveWindow("Mask", 555, 145)
 
+        cv2.imshow("Trackbars", label)
         cv2.imshow("Mask", cal_mask)
 
         key = cv2.waitKey(1) & 0xFF
 
         if key == ord('\r'):  # carriage return
+            enabled = True
+            break
+
+        if cv2.getWindowProperty("Mask", 0) < 0:
+            enabled = False
+            break
+
+        if cv2.getWindowProperty("Trackbars", 0) < 0:
+            enabled = False
             break
 
     videoInput2.release()
@@ -117,7 +129,7 @@ def calibration():
     print(orangeLower)
     print(orangeUpper)
 
-    return orangeLower, orangeUpper
+    return orangeLower, orangeUpper, enabled
 
 
 def drawing():
@@ -138,7 +150,7 @@ def drawing():
 
     # tn = True
 
-    cv2.namedWindow('Frame', cv2.WINDOW_AUTOSIZE)
+    cv2.namedWindow('BeMyBrush', cv2.WINDOW_AUTOSIZE)
 
     brush_color = [0, 0, 0]
     brush_size = 10
@@ -272,9 +284,12 @@ def drawing():
         merged1 = np.hstack((GUI, crap_canvas_res))
         #merged2 = np.vstack((merged1, CreateBlankCanvas(1200, 20, brush_color[0], brush_color[1], brush_color[2])))
 
-        cv2.imshow("Frame", merged1)
+        cv2.imshow("BeMyBrush", merged1)
 
         key = cv2.waitKey(1) & 0xFF
+
+        if cv2.getWindowProperty("BeMyBrush", 0) < 0:
+            break
 
         if key == ord("q"):
             break
@@ -286,8 +301,8 @@ if __name__ == "__main__":
 
 #--------------Kalibracja-----------------
 
-    orangeLowerdrawing, orangeUpperdrawing = calibration()
+    orangeLowerdrawing, orangeUpperdrawing, enabled = calibration()
 
 #---------- Rysowanie ----------------
-
-    drawing()
+    if enabled:
+        drawing()
