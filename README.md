@@ -1,6 +1,9 @@
 # PT_BeMyBrush
 # BeMyBrush
 
+## Uwaga
+Plik exe jest niedostępny do pobrania z repozytorium. Plik exe wygenerowano przy użyciu https://pypi.org/project/auto-py-to-exe/
+
 ## Charakterystyka ogólna
 Projekt studencki, którego celem jest opracowanie oraz implementacja aplikacji opartej o systemy wizyjne, której zadaniem ma być przechwycenie ruchu ciała/obiektu i odzwierciedlenie go w postaci obrazu.
 
