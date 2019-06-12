@@ -35,18 +35,19 @@ def WriteToFile(Ol, Ou):
 
 
 def ReadFromFile(nr):
-    ParametersFile = open('Resources/Config.txt')
-    try:
-        tekst = ParametersFile.read()
-    finally:
-        ParametersFile.close()
+    if os.path.exists("Resources/Config.txt"):
+        ParametersFile = open('Resources/Config.txt')
+        try:
+            tekst = ParametersFile.read()
+        finally:
+            ParametersFile.close()
 
-    x = tekst.split('\n')
-    i = 0
+        x = tekst.split('\n')
+        i = 0
 
-    for a in range(6):
-        nr[i] = int(x[i])
-        i += 1
+        for a in range(6):
+            nr[i] = int(x[i])
+            i += 1
 
 
 #zapis obrazu do pliku
@@ -61,13 +62,13 @@ def SaveFile(cs, image):
 
 def calibration():
 
-    nr = [0, 0, 0, 179, 255, 255]
+    nr = [9, 179, 40, 33, 255, 255]
     ReadFromFile(nr)
 
     orangeLower = (nr[0], nr[1], nr[2])
     orangeUpper = (nr[3], nr[4], nr[5])
 
-    label  = cv2.imread('Resources/Label.png', cv2.IMREAD_GRAYSCALE)
+    label = cv2.imread('Resources/Label.png', cv2.IMREAD_GRAYSCALE)
 
     videoInput2 = cv2.VideoCapture(0)
     time.sleep(1.0)
@@ -150,7 +151,7 @@ def drawing():
 
     # tn = True
 
-    cv2.namedWindow('BeMyBrush', cv2.WINDOW_AUTOSIZE)
+    cv2.namedWindow('BeMyBrush', cv2.WINDOW_NORMAL)
 
     brush_color = [0, 0, 0]
     brush_size = 10
